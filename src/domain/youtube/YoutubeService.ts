@@ -11,3 +11,5 @@ class YoutubeService {
     await this.youtubeRepository.getVideoInfo(id);
   }
 }
+
+export const youtubeService = new YoutubeService(new YoutubeRepository());
