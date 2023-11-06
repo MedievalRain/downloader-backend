@@ -27,7 +27,7 @@ export class YoutubeRepository {
       const command = `${this.cli} -f ${channels} --merge-output-format ${extension} -o ${filepath} ${id}`;
       await this.executeCommand(command);
     }
-    return filepath;
+    return filename;
   }
 
   private async executeCommand(command: string) {
