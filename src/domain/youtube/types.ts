@@ -2,6 +2,7 @@ export interface Stream {
   id: string;
   size: number;
   bitrate: number;
+  extension: string;
 }
 export interface VideoStream extends Stream {
   resolution: { height: number; width: number };
@@ -18,6 +19,7 @@ export interface StreamFormat {
   format_note: string;
   resolution: string;
   fps: number | null;
+  ext: string;
   audio_channels: number | null;
   filesize: number | null;
   asr: number | null;
@@ -30,4 +32,12 @@ export interface VideoInfoResponse {
   id: string;
   title: string;
   formats: StreamFormat[];
+}
+
+export interface DownloadData {
+  id: string;
+  streams: {
+    audio: number | null;
+    video: number | null;
+  };
 }

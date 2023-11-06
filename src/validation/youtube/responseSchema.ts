@@ -4,12 +4,14 @@ const audioStreamSchema = z.object({
   id: z.string(),
   size: z.number(),
   bitrate: z.number(),
+  extension: z.string(),
 });
 
 const videoStreamSchema = z.object({
   id: z.string(),
   size: z.number(),
   bitrate: z.number(),
+  extension: z.string(),
   resolution: z.object({ height: z.number(), width: z.number() }),
 });
 

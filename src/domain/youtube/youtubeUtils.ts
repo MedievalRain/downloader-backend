@@ -15,11 +15,17 @@ export const parseVideoInfo = (data: VideoInfoResponse): VideoInfo => {
   const videoInfo: VideoInfo = { audio: [], video: [], id: "" };
   videoInfo.id = data.id;
   data.formats.forEach((format) => {
-    const { audio_channels, resolution, width, height, filesize, vbr, abr } = format;
+    const { audio_channels, resolution, width, height, filesize, vbr, abr, ext } = format;
     if (audio_channels === null && resolution !== "audio only" && width && height && filesize && vbr) {
-      videoInfo.video.push({ id: format.format_id, resolution: { width, height }, size: filesize, bitrate: vbr });
+      videoInfo.video.push({
+        id: format.format_id,
+        resolution: { width, height },
+        size: filesize,
+        bitrate: vbr,
+        extension: ext,
+      });
     } else if (audio_channels != null && resolution === "audio only" && filesize && abr) {
-      videoInfo.audio.push({ id: format.format_id, size: filesize, bitrate: abr });
+      videoInfo.audio.push({ id: format.format_id, size: filesize, bitrate: abr, extension: ext });
     }
   });
 
