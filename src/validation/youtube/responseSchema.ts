@@ -20,3 +20,5 @@ export const getVideoInfoResponseSchema = z.object({
   audio: z.array(audioStreamSchema),
   video: z.array(videoStreamSchema),
 });
+
+export const getVideoUrlSchema = z.object({ filename: z.string() });

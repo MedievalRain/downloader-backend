@@ -1,21 +1,13 @@
 import express from "express";
 import { youtubeService } from "../domain/youtube/YoutubeService";
 import { IdParsingError, ValidationError } from "../types/errors";
-import { createReadStream, promises as fsPromises } from "fs";
 
 const youtubeRouter = express.Router();
 
-youtubeRouter.get("/download", async (req, res) => {
+youtubeRouter.get("/url", async (req, res) => {
   try {
-    const { filepath, filename, extension } = await youtubeService.downloadVideo(req.query);
-    const stats = await fsPromises.stat(filepath);
-    res.writeHead(200, {
-      "Content-Disposition": "attachment; filename=" + encodeURIComponent(`${filename}.${extension}`),
-      "Content-Type": `video/${extension}`,
-      "Content-Length": stats.size,
-    });
-    const readStream = createReadStream(filepath);
-    readStream.pipe(res);
+    const filename = await youtubeService.downloadVideo(req.query);
+    res.status(200).send({ filename });
   } catch (error) {
     if (error instanceof ValidationError || error instanceof IdParsingError) {
       res.status(400).json({ error: error.message });
@@ -40,3 +32,12 @@ youtubeRouter.get("/info", async (req, res) => {
 });
 
 export { youtubeRouter };
+// res.writeHead(200, {
+//     const stats = await fsPromises.stat(filepath);
+//   "Content-Disposition": "attachment; filename=" + encodeURIComponent(videoName),
+//   "Content-Type": "video/mp4",
+//   "Content-Length": stats.size,
+// });
+
+// const readStream = createReadStream(videoPath);
+// readStream.pipe(res);

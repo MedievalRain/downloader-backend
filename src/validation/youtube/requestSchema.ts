@@ -19,7 +19,6 @@ export const getVideoInfoSchema = z.object({
 const streamSchema = z.union([z.string(), z.null()]);
 const downloadVideoSchema = z.object({
   id: z.string(),
-  name: z.string(),
   audioStream: streamSchema,
   videoStream: streamSchema,
   extension: z.union([z.literal("mp4"), z.literal("webm")]),
@@ -29,7 +28,7 @@ export const parseDownloadVideoRequest = (data: any): DownloadData => {
   try {
     const parsed = downloadVideoSchema.parse(data);
     const audioStream = parsed.audioStream ? parseInt(parsed.audioStream) : null;
-    const videoStream = parsed.audioStream ? parseInt(parsed.audioStream) : null;
+    const videoStream = parsed.videoStream ? parseInt(parsed.videoStream) : null;
     return { ...parsed, audioStream, videoStream };
   } catch (error) {
     throw new ValidationError("Bad input");
