@@ -40,4 +40,5 @@ export interface DownloadData {
     audio: number | null;
     video: number | null;
   };
+  extension: "mp4" | "webm";
 }

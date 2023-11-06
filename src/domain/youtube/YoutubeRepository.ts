@@ -1,7 +1,7 @@
 import { exec } from "child_process";
 import { randomUUID } from "crypto";
 import { deleteFile, readJsonFile } from "../../utils/files";
-import { VideoInfoResponse } from "./types";
+import { DownloadData, VideoInfoResponse } from "./types";
 import { parseVideoInfo } from "./youtubeUtils";
 
 export class YoutubeRepository {
@@ -15,6 +15,16 @@ export class YoutubeRepository {
     await deleteFile(filepath);
     const videoInfo = parseVideoInfo(data);
     return videoInfo;
+  }
+
+  public async downloadVideo(downoadData: DownloadData) {
+    const channels = `${downoadData.streams.video ? downoadData.streams.video : ""}+${
+      downoadData.streams.audio ? downoadData.streams.audio : ""
+    }`;
+    const fileId = randomUUID();
+    const filepath = `files/video/${fileId}.mp4`;
+    const command = `${this.cli} -f ${channels} --merge-output-format ${downoadData.extension} -o ${filepath} ${downoadData.id}`;
+    return this.executeCommand(command);
   }
 
   private async executeCommand(command: string) {

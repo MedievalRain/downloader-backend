@@ -2,6 +2,7 @@ import request from "supertest";
 import express from "express";
 import { apiRouter } from "./api/api";
 import { getVideoInfoResponseSchema } from "./validation/youtube/responseSchema";
+import { DownloadData } from "./domain/youtube/types";
 
 const app = express();
 app.use("/api", apiRouter);
@@ -48,10 +49,20 @@ describe("/api/youtube/info", () => {
     expect(parseResult.success).toBe(true);
   });
   it("should respond with 200 status and video info when using url without www", async () => {
-    const url = "https://youtube.com/watch?v=dQw4w9WgXcQ";
+    const url = "https://www.youtube.com/watch?v=Yh2eH4fXgbU";
     const response = await request(app).get(baseUrl).query({ url });
     expect(response.statusCode).toBe(200);
     const parseResult = getVideoInfoResponseSchema.safeParse(response.body);
     expect(parseResult.success).toBe(true);
   });
+});
+
+describe("/api/youtube/download", () => {
+  const url = "/api/youtube/download";
+  it("should respond with 200 status for valid arguments", async () => {
+    const downloadData: DownloadData = { extension: "mp4", id: "Yh2eH4fXgbU", streams: { audio: 600, video: 597 } };
+    const response = await request(app).get(url).query(downloadData);
+    console.log(response);
+    expect(response.statusCode).toBe(200);
+  }, 60000);
 });
