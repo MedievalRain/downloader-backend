@@ -26,11 +26,8 @@ export const checkFileExists = async (filepath: string) => {
   try {
     await access(filepath);
     return true;
-  } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
-      return false;
-    }
-    throw error;
+  } catch {
+    return false;
   }
 };
 
