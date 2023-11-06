@@ -18,7 +18,7 @@ describe("/api/youtube/info", () => {
         error: "Bad input",
       }),
     );
-  }, 10000);
+  }, 1000);
 
   it("should respond with 400 status when not youtube url", async () => {
     const url = "https://google.com";
@@ -30,7 +30,7 @@ describe("/api/youtube/info", () => {
         error: "Bad input",
       }),
     );
-  }, 10000);
+  }, 1000);
   it("should respond with 400 status when no id in url found", async () => {
     const url = "https://youtube.com?b=xcq";
     const response = await request(app).get(baseUrl).query({ url });
@@ -40,21 +40,21 @@ describe("/api/youtube/info", () => {
         error: "Video ID not found",
       }),
     );
-  });
+  }, 1000);
   it("should respond with 200 status and video info when using url with www", async () => {
     const url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     const response = await request(app).get(baseUrl).query({ url });
     expect(response.statusCode).toBe(200);
     const parseResult = getVideoInfoResponseSchema.safeParse(response.body);
     expect(parseResult.success).toBe(true);
-  }, 10000);
+  }, 20000);
   it("should respond with 200 status and video info when using url without www", async () => {
     const url = "https://www.youtube.com/watch?v=Yh2eH4fXgbU";
     const response = await request(app).get(baseUrl).query({ url });
     expect(response.statusCode).toBe(200);
     const parseResult = getVideoInfoResponseSchema.safeParse(response.body);
     expect(parseResult.success).toBe(true);
-  }, 10000);
+  }, 20000);
 });
 
 describe("Download file", () => {
