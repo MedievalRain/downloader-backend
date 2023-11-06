@@ -39,8 +39,13 @@ describe("/api/youtube/info", () => {
       }),
     );
   });
-  it("should respond with 200 status when found id", async () => {
+  it("should respond with 200 status when using url with www", async () => {
     const url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    const response = await request(app).get(baseUrl).query({ url });
+    expect(response.statusCode).toBe(200);
+  });
+  it("should respond with 200 status when using url without www", async () => {
+    const url = "https://youtube.com/watch?v=dQw4w9WgXcQ";
     const response = await request(app).get(baseUrl).query({ url });
     expect(response.statusCode).toBe(200);
   });
