@@ -90,5 +90,5 @@ describe("/api/youtube/download", () => {
     expect(response.body).not.toBeNull();
     expect(Buffer.isBuffer(response.body)).toBeTruthy();
     expect(response.body.length).toBeGreaterThan(0);
-  }, 60000);
+  }, 10000);
 });
