@@ -1,4 +1,4 @@
-import { readFile, unlink } from "fs/promises";
+import { readFile, unlink, access } from "fs/promises";
 
 export const readJsonFile = async (filePath: string): Promise<any> => {
   try {
@@ -16,6 +16,18 @@ export const deleteFile = async (filePath: string) => {
     return unlink(filePath);
   } catch (error) {
     console.error("Error deleting JSON file:", error);
+    throw error;
+  }
+};
+
+export const checkFileExists = async (filepath: string) => {
+  try {
+    await access(filepath);
+    return true;
+  } catch (error) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return false;
+    }
     throw error;
   }
 };
