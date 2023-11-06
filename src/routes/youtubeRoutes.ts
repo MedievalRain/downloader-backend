@@ -2,6 +2,7 @@ import express from "express";
 import { youtubeService } from "../domain/youtube/YoutubeService";
 import { IdParsingError, ValidationError } from "../types/errors";
 import { createReadStream } from "fs";
+import { deleteFile } from "../utils/files";
 
 const youtubeRouter = express.Router();
 
@@ -33,8 +34,8 @@ youtubeRouter.get("/info", async (req, res) => {
 });
 
 youtubeRouter.get("/download/:filename", async (req, res) => {
+  const filename = req.params.filename;
   try {
-    const filename = req.params.filename;
     const { filepath, stats, extension, videoname } = await youtubeService.getFileInfo(req.query, filename);
     res.writeHead(200, {
       "Content-Disposition": "attachment; filename=" + encodeURIComponent(videoname + extension),
@@ -51,6 +52,12 @@ youtubeRouter.get("/download/:filename", async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     }
   }
+
+  res.on("finish", () => {
+    deleteFile(`files/video/${filename}`).catch((error) => {
+      console.error("Error deleting file after sending:", error);
+    });
+  });
 });
 
 export { youtubeRouter };
