@@ -1,5 +1,4 @@
-import { validate } from "../../validation/validation";
-import { getVideoInfoSchema } from "../../validation/youtube/requestSchema";
+import { parseGetVideoInfoRequest } from "../../validation/youtube/requestSchema";
 import { YoutubeRepository } from "./YoutubeRepository";
 import { getYoutubeId } from "./youtubeUtils";
 
@@ -7,7 +6,7 @@ class YoutubeService {
   constructor(private youtubeRepository: YoutubeRepository) {}
 
   public async getVideoInfo(data: any) {
-    const { url } = validate(data, getVideoInfoSchema);
+    const { url } = parseGetVideoInfoRequest(data);
     const id = getYoutubeId(url);
     return this.youtubeRepository.getVideoInfo(id);
   }
