@@ -1,6 +1,7 @@
 import express from "express";
 import { youtubeService } from "../domain/youtube/YoutubeService";
 import { IdParsingError, ValidationError } from "../types/errors";
+import { createReadStream } from "fs";
 
 const youtubeRouter = express.Router();
 
@@ -31,13 +32,25 @@ youtubeRouter.get("/info", async (req, res) => {
   }
 });
 
-export { youtubeRouter };
-// res.writeHead(200, {
-//     const stats = await fsPromises.stat(filepath);
-//   "Content-Disposition": "attachment; filename=" + encodeURIComponent(videoName),
-//   "Content-Type": "video/mp4",
-//   "Content-Length": stats.size,
-// });
+youtubeRouter.get("/download/:filename", async (req, res) => {
+  try {
+    const filename = req.params.filename;
+    const { filepath, stats, extension, videoname } = await youtubeService.getFileInfo(req.query, filename);
+    res.writeHead(200, {
+      "Content-Disposition": "attachment; filename=" + encodeURIComponent(videoname + extension),
+      "Content-Type": `video/${extension.replace(".", "")}`,
+      "Content-Length": stats.size,
+    });
+    const readStream = createReadStream(filepath);
+    readStream.pipe(res);
+  } catch (error) {
+    if (error instanceof ValidationError || error instanceof IdParsingError) {
+      res.status(400).json({ error: error.message });
+    } else {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+});
 
-// const readStream = createReadStream(videoPath);
-// readStream.pipe(res);
+export { youtubeRouter };

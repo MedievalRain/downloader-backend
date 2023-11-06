@@ -13,3 +13,10 @@ export class IdParsingError extends Error {
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
+export class FileNotExistsError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "FileNotExistsError";
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}

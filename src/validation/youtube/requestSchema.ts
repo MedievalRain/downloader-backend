@@ -24,6 +24,10 @@ const downloadVideoSchema = z.object({
   extension: z.union([z.literal("mp4"), z.literal("webm")]),
 });
 
+const downloadFileSchema = z.object({
+  videoname: z.string(),
+});
+
 export const parseDownloadVideoRequest = (data: any): DownloadData => {
   try {
     const parsed = downloadVideoSchema.parse(data);
@@ -38,6 +42,14 @@ export const parseDownloadVideoRequest = (data: any): DownloadData => {
 export const parseGetVideoInfoRequest = (data: any) => {
   try {
     return getVideoInfoSchema.parse(data);
+  } catch (error) {
+    throw new ValidationError("Bad input");
+  }
+};
+
+export const parseDownloadFileRequest = (data: any) => {
+  try {
+    return downloadFileSchema.parse(data);
   } catch (error) {
     throw new ValidationError("Bad input");
   }

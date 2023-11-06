@@ -19,7 +19,7 @@ export class YoutubeRepository {
 
   public async downloadVideo(downoadData: DownloadData) {
     const { videoStream, audioStream, extension, id } = downoadData;
-    const channels = `${videoStream ? audioStream : ""}+${videoStream ? audioStream : ""}`;
+    const channels = `${videoStream ? videoStream : ""}+${audioStream ? audioStream : ""}`;
     const filename = `${id}_${videoStream}_${audioStream}.${extension}`;
     const filepath = `files/video/${filename}`;
     const exists = await checkFileExists(filepath);

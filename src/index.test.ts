@@ -18,7 +18,7 @@ describe("/api/youtube/info", () => {
         error: "Bad input",
       }),
     );
-  });
+  }, 10000);
 
   it("should respond with 400 status when not youtube url", async () => {
     const url = "https://google.com";
@@ -30,7 +30,7 @@ describe("/api/youtube/info", () => {
         error: "Bad input",
       }),
     );
-  });
+  }, 10000);
   it("should respond with 400 status when no id in url found", async () => {
     const url = "https://youtube.com?b=xcq";
     const response = await request(app).get(baseUrl).query({ url });
@@ -47,14 +47,14 @@ describe("/api/youtube/info", () => {
     expect(response.statusCode).toBe(200);
     const parseResult = getVideoInfoResponseSchema.safeParse(response.body);
     expect(parseResult.success).toBe(true);
-  });
+  }, 10000);
   it("should respond with 200 status and video info when using url without www", async () => {
     const url = "https://www.youtube.com/watch?v=Yh2eH4fXgbU";
     const response = await request(app).get(baseUrl).query({ url });
     expect(response.statusCode).toBe(200);
     const parseResult = getVideoInfoResponseSchema.safeParse(response.body);
     expect(parseResult.success).toBe(true);
-  });
+  }, 10000);
 });
 
 describe("/api/youtube/url", () => {
@@ -70,5 +70,25 @@ describe("/api/youtube/url", () => {
     expect(response.statusCode).toBe(200);
     const parseResult = getVideoUrlSchema.safeParse(response.body);
     expect(parseResult.success).toBe(true);
+  }, 60000);
+});
+describe("/api/youtube/download", () => {
+  const baseUrl = "/api/youtube/download";
+  it("should respond with 200 status for valid arguments", async () => {
+    const videoname = "You Probably Shouldn't Use React.memo()";
+    const response = await request(app)
+      .get(baseUrl + "/Yh2eH4fXgbU_597_600.mp4")
+      .query({ videoname });
+    expect(response.statusCode).toBe(200);
+    expect(response.headers["content-type"]).toEqual(expect.stringContaining("video/mp4"));
+    expect(response.headers["content-disposition"]).toEqual(expect.stringContaining("attachment; filename="));
+    expect(response.headers["content-length"]).toBeDefined();
+    const expectedFilename = encodeURIComponent(videoname + ".mp4");
+    expect(response.headers["content-disposition"]).toEqual(expect.stringContaining(expectedFilename));
+    const contentLength = parseInt(response.headers["content-length"], 10);
+    expect(contentLength).toBeGreaterThan(0);
+    expect(response.body).not.toBeNull();
+    expect(Buffer.isBuffer(response.body)).toBeTruthy();
+    expect(response.body.length).toBeGreaterThan(0);
   }, 60000);
 });
