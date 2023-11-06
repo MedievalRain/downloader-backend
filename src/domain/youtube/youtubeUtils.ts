@@ -6,6 +6,6 @@ export const getYoutubeId = (urlString: string) => {
   if (id) {
     return id;
   } else {
-    throw new IdParsingError("Video Id not found");
+    throw new IdParsingError("Video ID not found");
   }
 };

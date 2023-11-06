@@ -9,6 +9,6 @@ export const parseVideoInfoSchema = (data: any) => {
   try {
     return getVideoInfoSchema.parse(data);
   } catch (error) {
-    throw new ValidationError("Bad Input");
+    throw new ValidationError("Bad input");
   }
 };
