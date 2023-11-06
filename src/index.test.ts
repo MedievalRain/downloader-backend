@@ -60,9 +60,9 @@ describe("/api/youtube/info", () => {
 describe("Download file", () => {
   const downloadData: DownloadData = {
     extension: "mp4",
-    id: "Yh2eH4fXgbU",
-    audioStream: 600,
-    videoStream: 597,
+    id: "F7hHnrlEfpY",
+    audioStream: 599,
+    videoStream: null,
   };
   it("should get filename", async () => {
     const response = await request(app).get("/api/youtube/url").query(downloadData);
