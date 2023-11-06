@@ -6,8 +6,8 @@ const youtubeRouter = express.Router();
 
 youtubeRouter.get("/:url", async (req, res) => {
   try {
-    await youtubeService.getVideoInfo(req.query);
-    res.status(200);
+    const videoInfo = await youtubeService.getVideoInfo(req.query);
+    res.status(200).json(videoInfo);
   } catch (error) {
     if (error instanceof ValidationError || error instanceof IdParsingError) {
       res.status(400).json({ error: error.message });
