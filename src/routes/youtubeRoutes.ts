@@ -4,7 +4,7 @@ import { IdParsingError, ValidationError } from "../types/errors";
 
 const youtubeRouter = express.Router();
 
-youtubeRouter.get("/:url", async (req, res) => {
+youtubeRouter.get("/info", async (req, res) => {
   try {
     const videoInfo = await youtubeService.getVideoInfo(req.query);
     res.status(200).json(videoInfo);
