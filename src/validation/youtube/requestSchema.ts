@@ -1,5 +1,4 @@
 import z from "zod";
-import { ValidationError } from "../types/errors";
 
 const isYoutubeUrl = (url: string) => {
   try {
@@ -12,14 +11,6 @@ const isYoutubeUrl = (url: string) => {
   }
 };
 
-const getVideoInfoSchema = z.object({
+export const getVideoInfoSchema = z.object({
   url: z.string().refine(isYoutubeUrl),
 });
-
-export const parseVideoInfoSchema = (data: any) => {
-  try {
-    return getVideoInfoSchema.parse(data);
-  } catch (error) {
-    throw new ValidationError("Bad input");
-  }
-};
