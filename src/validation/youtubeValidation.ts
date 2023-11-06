@@ -1,5 +1,5 @@
 import z from "zod";
-import { ValidationError } from "../../types/errors";
+import { ValidationError } from "../types/errors";
 
 const isYoutubeUrl = (url: string) => {
   try {
