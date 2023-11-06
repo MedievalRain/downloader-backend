@@ -60,9 +60,24 @@ describe("/api/youtube/info", () => {
 describe("/api/youtube/download", () => {
   const url = "/api/youtube/download";
   it("should respond with 200 status for valid arguments", async () => {
-    const downloadData: DownloadData = { extension: "mp4", id: "Yh2eH4fXgbU", streams: { audio: 600, video: 597 } };
+    const downloadData: DownloadData = {
+      extension: "mp4",
+      id: "Yh2eH4fXgbU",
+      audioStream: 600,
+      videoStream: 597,
+      name: "You Probably Shouldn't Use React.memo()",
+    };
     const response = await request(app).get(url).query(downloadData);
-    console.log(response);
     expect(response.statusCode).toBe(200);
+    expect(response.headers["content-type"]).toEqual(expect.stringContaining("video/mp4"));
+    expect(response.headers["content-disposition"]).toEqual(expect.stringContaining("attachment; filename="));
+    expect(response.headers["content-length"]).toBeDefined();
+    const expectedFilename = encodeURIComponent(`${downloadData.name}.${downloadData.extension}`);
+    expect(response.headers["content-disposition"]).toEqual(expect.stringContaining(expectedFilename));
+    const contentLength = parseInt(response.headers["content-length"], 10);
+    expect(contentLength).toBeGreaterThan(0);
+    expect(response.body).not.toBeNull();
+    expect(Buffer.isBuffer(response.body)).toBeTruthy();
+    expect(response.body.length).toBeGreaterThan(0);
   }, 60000);
 });

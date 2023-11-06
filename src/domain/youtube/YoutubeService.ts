@@ -13,7 +13,8 @@ class YoutubeService {
 
   public async downloadVideo(data: any) {
     const downoadData = parseDownloadVideoRequest(data);
-    return this.youtubeRepository.downloadVideo(downoadData);
+    const filepath = await this.youtubeRepository.downloadVideo(downoadData);
+    return { filepath, filename: downoadData.name, extension: downoadData.extension };
   }
 }
 

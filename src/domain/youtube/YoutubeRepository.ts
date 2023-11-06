@@ -18,13 +18,13 @@ export class YoutubeRepository {
   }
 
   public async downloadVideo(downoadData: DownloadData) {
-    const channels = `${downoadData.streams.video ? downoadData.streams.video : ""}+${
-      downoadData.streams.audio ? downoadData.streams.audio : ""
-    }`;
+    const { videoStream, audioStream, extension, id } = downoadData;
+    const channels = `${videoStream ? audioStream : ""}+${videoStream ? audioStream : ""}`;
     const fileId = randomUUID();
     const filepath = `files/video/${fileId}.mp4`;
-    const command = `${this.cli} -f ${channels} --merge-output-format ${downoadData.extension} -o ${filepath} ${downoadData.id}`;
-    return this.executeCommand(command);
+    const command = `${this.cli} -f ${channels} --merge-output-format ${extension} -o ${filepath} ${id}`;
+    await this.executeCommand(command);
+    return filepath;
   }
 
   private async executeCommand(command: string) {

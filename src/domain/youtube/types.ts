@@ -36,9 +36,9 @@ export interface VideoInfoResponse {
 
 export interface DownloadData {
   id: string;
-  streams: {
-    audio: number | null;
-    video: number | null;
-  };
+  name: string;
+  audioStream: number | null;
+  videoStream: number | null;
+
   extension: "mp4" | "webm";
 }
