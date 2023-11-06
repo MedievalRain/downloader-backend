@@ -19,7 +19,7 @@ export class YoutubeRepository {
 
   public async downloadVideo(downoadData: DownloadData) {
     const { videoStream, audioStream, extension, id } = downoadData;
-    const channels = `${videoStream ? videoStream : ""}+${audioStream ? audioStream : ""}`;
+    const channels = this.formatChannels(videoStream, audioStream);
     const filename = `${id}_${videoStream}_${audioStream}.${extension}`;
     const filepath = `files/video/${filename}`;
     const exists = await checkFileExists(filepath);
@@ -46,5 +46,12 @@ export class YoutubeRepository {
         resolve(stdout);
       });
     });
+  }
+
+  private formatChannels(videoStream: number | null, audioStream: number | null): string {
+    if (videoStream && audioStream) return `${videoStream}+${audioStream}`;
+    if (videoStream) return videoStream.toString();
+    if (audioStream) return audioStream.toString();
+    return "";
   }
 }
