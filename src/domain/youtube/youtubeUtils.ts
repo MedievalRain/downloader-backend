@@ -39,7 +39,7 @@ export const parseVideoInfo = (data: VideoInfoResponse): VideoInfo => {
         }
       }
     } else if (audio_channels != null && resolution === "audio only" && filesize && abr) {
-      videoInfo.audio.push({ id: format.format_id, size: filesize, bitrate: abr, extension: ext });
+      videoInfo.audio.push({ id: format.format_id, size: filesize, bitrate: abr, extension: ext, resolution: abr.toString() });
     }
   });
 

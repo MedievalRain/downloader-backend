@@ -12,7 +12,7 @@ const videoStreamSchema = z.object({
   size: z.number(),
   bitrate: z.number(),
   extension: z.string(),
-  resolution: z.object({ height: z.number(), width: z.number() }),
+  resolution: z.string(),
 });
 
 export const getVideoInfoResponseSchema = z.object({

@@ -1,17 +1,15 @@
 export interface Stream {
   id: string;
   size: number;
-  bitrate: number;
   extension: string;
-}
-export interface VideoStream extends Stream {
+  bitrate: number;
   resolution: string;
 }
 
 export interface VideoInfo {
   id: string;
   audio: Stream[];
-  video: VideoStream[];
+  video: Stream[];
 }
 
 export interface StreamFormat {
