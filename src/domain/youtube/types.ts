@@ -5,7 +5,7 @@ export interface Stream {
   extension: string;
 }
 export interface VideoStream extends Stream {
-  resolution: { height: number; width: number };
+  resolution: string;
 }
 
 export interface VideoInfo {
