@@ -16,7 +16,7 @@ export const parseVideoInfo = (data: VideoInfoResponse): VideoInfo => {
   videoInfo.id = data.id;
   data.formats.forEach((format) => {
     const { audio_channels, resolution, width, height, filesize, vbr, abr, ext } = format;
-    if (audio_channels === null && resolution !== "audio only" && width && height && filesize && vbr) {
+    if (audio_channels === null && resolution !== "audio only" && width && height && filesize && filesize < 5000000000 && vbr) {
       const resolution = `${height}p`;
       const index = videoInfo.video.map((stream) => stream.resolution).indexOf(resolution);
       if (index === -1) {
