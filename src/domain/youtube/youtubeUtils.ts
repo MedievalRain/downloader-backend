@@ -12,8 +12,7 @@ export const getYoutubeId = (urlString: string) => {
 };
 
 export const parseVideoInfo = (data: VideoInfoResponse): VideoInfo => {
-  const videoInfo: VideoInfo = { audio: [], video: [], id: "" };
-  videoInfo.id = data.id;
+  const videoInfo: VideoInfo = { audio: [], video: [], id: data.id, title: data.title };
   data.formats.forEach((format) => {
     const { audio_channels, resolution, width, height, filesize, vbr, abr, ext } = format;
     if (audio_channels === null && resolution !== "audio only" && width && height && filesize && filesize < 5000000000 && vbr) {

@@ -10,6 +10,7 @@ export interface VideoInfo {
   id: string;
   audio: Stream[];
   video: Stream[];
+  title: string;
 }
 
 export interface StreamFormat {
