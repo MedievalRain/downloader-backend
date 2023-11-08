@@ -61,8 +61,8 @@ describe("Download file", () => {
   const downloadData: DownloadData = {
     extension: "mp4",
     id: "F7hHnrlEfpY",
-    audioStream: 599,
-    videoStream: null,
+    audio: 599,
+    video: null,
   };
   it("should get filename", async () => {
     const response = await request(app).get("/api/youtube/url").query(downloadData);
@@ -73,9 +73,7 @@ describe("Download file", () => {
   it("should get file", async () => {
     const videoname = "You Probably Shouldn't Use React.memo()";
     const response = await request(app)
-      .get(
-        `/api/youtube/download/${downloadData.id}_${downloadData.videoStream}_${downloadData.audioStream}.${downloadData.extension}`,
-      )
+      .get(`/api/youtube/download/${downloadData.id}_${downloadData.video}_${downloadData.audio}.${downloadData.extension}`)
       .query({ videoname });
     expect(response.statusCode).toBe(200);
     expect(response.headers["content-type"]).toEqual(expect.stringContaining(`video/${downloadData.extension}`));

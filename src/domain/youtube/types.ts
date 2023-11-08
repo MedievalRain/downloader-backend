@@ -36,8 +36,8 @@ export type FileExtension = "mp4" | "webm";
 
 export interface DownloadData {
   id: string;
-  audioStream: number | null;
-  videoStream: number | null;
+  audio: number | null;
+  video: number | null;
 
   extension: FileExtension;
 }

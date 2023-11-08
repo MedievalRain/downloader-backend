@@ -16,11 +16,11 @@ const isYoutubeUrl = (url: string) => {
 export const getVideoInfoSchema = z.object({
   url: z.string().refine(isYoutubeUrl),
 });
-const streamSchema = z.union([z.string(), z.null()]);
+const streamSchema = z.string().optional();
 const downloadVideoSchema = z.object({
   id: z.string(),
-  audioStream: streamSchema,
-  videoStream: streamSchema,
+  audio: streamSchema,
+  video: streamSchema,
   extension: z.union([z.literal("mp4"), z.literal("webm")]),
 });
 
@@ -31,9 +31,9 @@ const downloadFileSchema = z.object({
 export const parseDownloadVideoRequest = (data: any): DownloadData => {
   try {
     const parsed = downloadVideoSchema.parse(data);
-    const audioStream = parsed.audioStream ? parseInt(parsed.audioStream) || null : null;
-    const videoStream = parsed.videoStream ? parseInt(parsed.videoStream) || null : null;
-    return { ...parsed, audioStream, videoStream };
+    const audio = parsed.audio ? parseInt(parsed.audio) : null;
+    const video = parsed.video ? parseInt(parsed.video) : null;
+    return { ...parsed, audio, video };
   } catch (error) {
     throw new ValidationError("Bad input");
   }

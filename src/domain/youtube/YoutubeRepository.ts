@@ -18,13 +18,13 @@ export class YoutubeRepository {
   }
 
   public async downloadVideo(downoadData: DownloadData) {
-    const { videoStream, audioStream, extension, id } = downoadData;
-    const channels = this.formatChannels(videoStream, audioStream);
-    const filename = `${id}_${videoStream}_${audioStream}.${extension}`;
+    const { video, audio, extension, id } = downoadData;
+    const channels = this.formatChannels(video, audio);
+    const filename = `${id}_${video}_${audio}.${extension}`;
     const filepath = `files/video/${filename}`;
     const exists = await checkFileExists(filepath);
     if (!exists) {
-      const command = `${this.cli} -f ${channels} --merge-output-format ${extension} -o ${filepath} ${id}`;
+      const command = `${this.cli} -f ${channels} --merge-output-format ${extension} ${id} -o ${filepath}`;
       await this.executeCommand(command);
     }
     return filename;
