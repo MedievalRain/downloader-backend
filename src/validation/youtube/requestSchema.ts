@@ -21,7 +21,6 @@ const downloadVideoSchema = z.object({
   id: z.string(),
   audio: streamSchema,
   video: streamSchema,
-  extension: z.union([z.literal("mp4"), z.literal("webm")]),
 });
 
 const downloadFileSchema = z.object({

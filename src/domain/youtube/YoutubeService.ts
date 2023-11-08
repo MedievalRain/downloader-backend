@@ -24,8 +24,8 @@ class YoutubeService {
 
   public async getFileInfo(data: any, filename: string) {
     const { videoname } = parseDownloadFileRequest(data);
-    const { extension, filepath, stats } = await getVideoFileInfo(filename);
-    return { filepath, stats, extension, videoname };
+    const { filepath, stats } = await getVideoFileInfo(filename);
+    return { filepath, stats, videoname };
   }
 }
 

@@ -32,12 +32,8 @@ export interface VideoInfoResponse {
   formats: StreamFormat[];
 }
 
-export type FileExtension = "mp4" | "webm";
-
 export interface DownloadData {
   id: string;
   audio: number | null;
   video: number | null;
-
-  extension: FileExtension;
 }

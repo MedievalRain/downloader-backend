@@ -36,10 +36,10 @@ youtubeRouter.get("/info", async (req, res) => {
 youtubeRouter.get("/download/:filename", async (req, res) => {
   const filename = req.params.filename;
   try {
-    const { filepath, stats, extension, videoname } = await youtubeService.getFileInfo(req.query, filename);
+    const { filepath, stats, videoname } = await youtubeService.getFileInfo(req.query, filename);
     res.writeHead(200, {
-      "Content-Disposition": "attachment; filename=" + encodeURIComponent(videoname + extension),
-      "Content-Type": `video/${extension.replace(".", "")}`,
+      "Content-Disposition": "attachment; filename=" + encodeURIComponent(`${videoname}.mp4`),
+      "Content-Type": `video/mp4`,
       "Content-Length": stats.size,
     });
     const readStream = createReadStream(filepath);

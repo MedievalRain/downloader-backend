@@ -59,7 +59,6 @@ describe("/api/youtube/info", () => {
 
 describe("Download file", () => {
   const downloadData: DownloadData = {
-    extension: "mp4",
     id: "F7hHnrlEfpY",
     audio: 599,
     video: null,
@@ -73,13 +72,13 @@ describe("Download file", () => {
   it("should get file", async () => {
     const videoname = "You Probably Shouldn't Use React.memo()";
     const response = await request(app)
-      .get(`/api/youtube/download/${downloadData.id}_${downloadData.video}_${downloadData.audio}.${downloadData.extension}`)
+      .get(`/api/youtube/download/${downloadData.id}_${downloadData.video}_${downloadData.audio}.mp4`)
       .query({ videoname });
     expect(response.statusCode).toBe(200);
-    expect(response.headers["content-type"]).toEqual(expect.stringContaining(`video/${downloadData.extension}`));
+    expect(response.headers["content-type"]).toEqual(expect.stringContaining(`video/mp4`));
     expect(response.headers["content-disposition"]).toEqual(expect.stringContaining("attachment; filename="));
     expect(response.headers["content-length"]).toBeDefined();
-    const expectedFilename = encodeURIComponent(videoname + `.${downloadData.extension}`);
+    const expectedFilename = encodeURIComponent(videoname + `.mp4`);
     expect(response.headers["content-disposition"]).toEqual(expect.stringContaining(expectedFilename));
     const contentLength = parseInt(response.headers["content-length"], 10);
     expect(contentLength).toBeGreaterThan(0);

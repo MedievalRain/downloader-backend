@@ -1,5 +1,4 @@
 import { readFile, unlink, access, stat } from "fs/promises";
-import path from "path";
 import { FileNotExistsError } from "../types/errors";
 
 export const readJsonFile = async (filePath: string): Promise<any> => {
@@ -35,9 +34,8 @@ export const getVideoFileInfo = async (filename: string) => {
   const filepath = `files/video/${filename}`;
   const exists = await checkFileExists(filepath);
   if (exists) {
-    const extension = path.extname(filepath);
     const stats = await stat(filepath);
-    return { stats, extension, filepath };
+    return { stats, filepath };
   } else {
     throw new FileNotExistsError("File does not exist");
   }
