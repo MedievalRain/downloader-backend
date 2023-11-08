@@ -3,6 +3,7 @@ import { randomUUID } from "crypto";
 import { checkFileExists, deleteFile, readJsonFile } from "../../utils/files";
 import { DownloadData, VideoInfoResponse } from "./types";
 import { parseVideoInfo } from "./youtubeUtils";
+import { VideoNotFoundError } from "../../types/errors";
 
 export class YoutubeRepository {
   private cli = "yt-dlp";
@@ -35,7 +36,9 @@ export class YoutubeRepository {
       exec(command, (error, stdout, stderr) => {
         if (error) {
           console.error(`exec error: ${error}`);
-          return reject(error);
+          if (stderr.includes("is not a valid URL. Set --default-search")) {
+            return reject(new VideoNotFoundError("Video not found"));
+          }
         }
         if (stderr) {
           if (!stderr.includes("WARNING: [youtube] Failed to download m3u8 information: HTTP Error 429: Too Many Requests")) {

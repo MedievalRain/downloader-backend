@@ -20,3 +20,11 @@ export class FileNotExistsError extends Error {
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
+
+export class VideoNotFoundError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = " VideoNotFoundError";
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}
