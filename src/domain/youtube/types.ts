@@ -37,4 +37,5 @@ export interface DownloadData {
   id: string;
   audio: number | null;
   video: number | null;
+  title: string;
 }

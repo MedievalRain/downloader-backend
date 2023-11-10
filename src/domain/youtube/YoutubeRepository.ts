@@ -1,6 +1,6 @@
 import { exec } from "child_process";
 import { randomUUID } from "crypto";
-import { checkFileExists, deleteFile, readJsonFile } from "../../utils/files";
+import { deleteFile, readJsonFile } from "../../utils/files";
 import { DownloadData, VideoInfoResponse } from "./types";
 import { parseVideoInfo } from "./youtubeUtils";
 import { VideoNotFoundError } from "../../types/errors";
@@ -18,17 +18,12 @@ export class YoutubeRepository {
     return videoInfo;
   }
 
-  public async downloadVideo(downoadData: DownloadData) {
+  public async downloadVideo(downoadData: DownloadData, filepath: string) {
     const { video, audio, id } = downoadData;
     const channels = this.formatChannels(video, audio);
-    const filename = `${id}_${video}_${audio}.mp4`;
-    const filepath = `files/video/${filename}`;
-    const exists = await checkFileExists(filepath);
-    if (!exists) {
-      const command = `${this.cli} -f ${channels} --merge-output-format mp4 ${id} -o ${filepath}`;
-      await this.executeCommand(command);
-    }
-    return filename;
+    const command = `${this.cli} -f ${channels} --merge-output-format mp4 ${id} -o ${filepath}`;
+    await this.executeCommand(command);
+    return filepath;
   }
 
   private async executeCommand(command: string) {

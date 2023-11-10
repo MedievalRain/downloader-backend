@@ -21,6 +21,7 @@ const downloadVideoSchema = z.object({
   id: z.string(),
   audio: streamSchema,
   video: streamSchema,
+  title: z.string(),
 });
 
 const downloadFileSchema = z.object({

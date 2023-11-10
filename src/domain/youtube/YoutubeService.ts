@@ -1,9 +1,5 @@
-import { getVideoFileInfo } from "../../utils/files";
-import {
-  parseDownloadFileRequest,
-  parseDownloadVideoRequest,
-  parseGetVideoInfoRequest,
-} from "../../validation/youtube/requestSchema";
+import { getFileSize } from "../../utils/files";
+import { parseDownloadVideoRequest, parseGetVideoInfoRequest } from "../../validation/youtube/requestSchema";
 import { YoutubeRepository } from "./YoutubeRepository";
 import { getYoutubeId } from "./youtubeUtils";
 
@@ -16,16 +12,11 @@ class YoutubeService {
     return this.youtubeRepository.getVideoInfo(id);
   }
 
-  public async downloadVideo(data: any) {
+  public async downloadVideo(data: any, filepath: string) {
     const downloadData = parseDownloadVideoRequest(data);
-    const filename = await this.youtubeRepository.downloadVideo(downloadData);
-    return filename;
-  }
-
-  public async getFileInfo(data: any, filename: string) {
-    const { videoname } = parseDownloadFileRequest(data);
-    const { filepath, stats } = await getVideoFileInfo(filename);
-    return { filepath, stats, videoname };
+    await this.youtubeRepository.downloadVideo(downloadData, filepath);
+    const stats = await getFileSize(filepath);
+    return { stats, title: downloadData.title };
   }
 }
 

@@ -62,6 +62,7 @@ describe("Download file", () => {
     id: "F7hHnrlEfpY",
     audio: 599,
     video: null,
+    title: "Test Title",
   };
   it("should get filename", async () => {
     const response = await request(app).get("/api/youtube/url").query(downloadData);

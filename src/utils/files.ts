@@ -30,12 +30,10 @@ export const checkFileExists = async (filepath: string) => {
   }
 };
 
-export const getVideoFileInfo = async (filename: string) => {
-  const filepath = `files/video/${filename}`;
+export const getFileSize = async (filepath: string) => {
   const exists = await checkFileExists(filepath);
   if (exists) {
-    const stats = await stat(filepath);
-    return { stats, filepath };
+    return stat(filepath);
   } else {
     throw new FileNotExistsError("File does not exist");
   }
