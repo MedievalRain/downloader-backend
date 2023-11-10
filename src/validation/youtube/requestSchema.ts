@@ -13,12 +13,22 @@ const isYoutubeUrl = (url: string) => {
   }
 };
 
+const validIdSchema = z.string().refine(
+  (data) => {
+    const regex = /^[A-Za-z0-9-]+$/;
+    return regex.test(data);
+  },
+  {
+    message: "Bad Id",
+  },
+);
+
 export const getVideoInfoSchema = z.object({
   url: z.string().refine(isYoutubeUrl),
 });
 const streamSchema = z.string().optional();
 const downloadVideoSchema = z.object({
-  id: z.string(),
+  id: validIdSchema,
   audio: streamSchema,
   video: streamSchema,
   title: z.string(),
